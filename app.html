@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>잇다 — 앱</title>
+<link href="https://fonts.googleapis.com/css2?family=Nanum+Myeongjo:wght@400;700&family=Noto+Sans+KR:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{--ivory:#F7F3EC;--surface:#FCFAF5;--clay:#C26B4A;--clay-dark:#A5482A;--sand:#CBB089;--ink:#2A2420;--muted:#8A8175;--mist:#EFE7D8;--line:#E4DCCE;}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:'Noto Sans KR',sans-serif;background:var(--ivory);color:var(--ink);line-height:1.6}
+  .wrap{max-width:480px;margin:0 auto;padding:0 20px 60px}
+  header{padding:18px 0;display:flex;align-items:center}
+  .logo{font-family:'Nanum Myeongjo',serif;font-size:24px;font-weight:700;color:var(--clay)}
+  .logout{margin-left:auto;font-size:12px;color:var(--muted);background:none;border:none;cursor:pointer}
+  .serif{font-family:'Nanum Myeongjo',serif}
+  h1{font-family:'Nanum Myeongjo',serif;font-size:26px;margin:10px 0 6px}
+  .sub{color:#6F6557;font-size:14px;margin-bottom:22px}
+  .card{background:var(--surface);border:0.5px solid var(--line);border-radius:16px;padding:22px;margin-bottom:18px}
+  label.q{display:block;font-size:14px;font-weight:500;margin:16px 0 7px}
+  label.q:first-child{margin-top:0}
+  .req{color:var(--clay)}
+  input,select,textarea{width:100%;font-family:inherit;font-size:14px;color:var(--ink);background:#fff;border:0.5px solid var(--line);border-radius:10px;padding:11px 12px;outline:none}
+  input:focus,select:focus,textarea:focus{border-color:var(--clay)}
+  textarea{resize:vertical;min-height:44px}
+  .row2{display:flex;gap:10px}.row2>div{flex:1}
+  .seg{display:flex;gap:7px;flex-wrap:wrap}
+  .seg .opt{flex:1;min-width:60px}
+  .seg input{position:absolute;opacity:0;pointer-events:none}
+  .seg label{display:block;text-align:center;font-size:13px;padding:10px 6px;border:0.5px solid var(--line);border-radius:9px;background:#fff;cursor:pointer;color:#6F6557}
+  .seg input:checked+label{background:var(--clay);border-color:var(--clay);color:var(--surface)}
+  .bg-row{border:0.5px solid var(--line);border-radius:10px;padding:9px 11px;background:#fff;margin-bottom:9px}
+  .bg-row .t{font-size:12px;color:var(--muted);margin-bottom:6px}
+  .sec{font-size:13px;font-weight:500;color:var(--clay-dark);margin:24px 0 4px;letter-spacing:.3px}
+  .hint{font-size:12px;color:var(--muted);margin-top:5px}
+  .chk{display:flex;gap:8px;align-items:flex-start;margin-top:12px}
+  .chk input{width:16px;height:16px;margin-top:3px;accent-color:var(--clay);flex-shrink:0}
+  .chk label{font-size:13px;color:#5F574C}
+  button.primary{width:100%;background:var(--clay);border:none;color:var(--surface);font-family:inherit;font-size:16px;font-weight:500;padding:14px 0;border-radius:12px;cursor:pointer;margin-top:8px}
+  button.primary:disabled{opacity:.5;cursor:not-allowed}
+  .link{background:none;border:none;color:var(--clay-dark);font-size:13px;cursor:pointer;text-decoration:underline}
+  .msg{font-size:13px;margin-top:10px;padding:10px 12px;border-radius:8px;display:none}
+  .msg.err{background:#FBEAEA;color:#A33;display:block}
+  .msg.ok{background:#E9F3EC;color:#2F6B45;display:block}
+  .photos{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}
+  .thumb{width:72px;height:72px;border-radius:10px;object-fit:cover;border:0.5px solid var(--line)}
+  .hide{display:none}
+  .center{text-align:center;padding:50px 0}
+  .center .serif{font-size:24px;color:var(--clay)}
+  .lockmsg{font-size:12px;color:var(--muted);background:var(--mist);border-radius:8px;padding:8px 10px;margin-top:8px}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header><span class="logo">잇다</span><button class="logout hide" id="logoutBtn">로그아웃</button></header>
+
+  <!-- ===== AUTH ===== -->
+  <section id="authView" class="hide">
+    <h1 id="authTitle">로그인</h1>
+    <p class="sub">검증된 사람과, 진지하게.</p>
+    <div class="card">
+      <label class="q" for="email">이메일</label>
+      <input type="email" id="email" placeholder="you@example.com" autocomplete="email">
+      <label class="q" for="password">비밀번호</label>
+      <input type="password" id="password" placeholder="6자 이상" autocomplete="current-password">
+      <button class="primary" id="authBtn">로그인</button>
+      <div class="msg" id="authMsg"></div>
+      <p style="text-align:center;margin-top:14px"><button class="link" id="authToggle">처음이신가요? 가입하기</button></p>
+    </div>
+    <p class="hint" style="text-align:center">가입 시 <a href="/privacy.html" target="_blank" style="color:var(--clay-dark)">개인정보처리방침</a>에 동의하게 됩니다.</p>
+  </section>
+
+  <!-- ===== PROFILE FORM ===== -->
+  <section id="profileView" class="hide">
+    <h1>프로필 작성</h1>
+    <p class="sub">가치관으로 보여지는 나. 사진은 매칭된 상대에게만 공개돼요.</p>
+    <div class="card">
+      <div class="sec">기본 정보</div>
+      <label class="q">닉네임 <span class="req">*</span> (실명 X)</label>
+      <input type="text" id="nickname" maxlength="20" placeholder="예: 민트">
+      <label class="q">성별 <span class="req">*</span></label>
+      <div class="seg">
+        <span class="opt"><input type="radio" name="gender" id="gm" value="남"><label for="gm">남성</label></span>
+        <span class="opt"><input type="radio" name="gender" id="gf" value="여"><label for="gf">여성</label></span>
+      </div>
+      <div class="row2">
+        <div><label class="q">출생연도 <span class="req">*</span></label><select id="birth_year"><option value="">선택</option></select></div>
+        <div><label class="q">키(cm)</label><input type="number" id="height" min="130" max="210"></div>
+      </div>
+      <div class="row2">
+        <div><label class="q">거주 지역 <span class="req">*</span></label>
+          <select id="region"><option value="">선택</option><option>대전 유성구</option><option>대전 서구</option><option>대전 중구</option><option>대전 동구</option><option>대전 대덕구</option><option>세종</option><option>대전 인근</option></select></div>
+        <div><label class="q">직업군</label><input type="text" id="job_category" maxlength="40" placeholder="예: 간호사"></div>
+      </div>
+
+      <div class="sec">라이프스타일</div>
+      <label class="q">흡연</label>
+      <div class="seg" id="smoking"></div>
+      <label class="q">음주</label>
+      <div class="seg" id="drinking"></div>
+      <label class="q">반려동물</label>
+      <div class="seg" id="pet"></div>
+
+      <div class="sec">성향 · 가치관</div>
+      <div class="row2">
+        <div><label class="q">MBTI</label><select id="mbti"><option value="">선택</option></select></div>
+        <div><label class="q">결혼관</label><select id="marriage_view"><option value="">선택</option><option>생각있음</option><option>천천히</option><option>비혼지향</option></select></div>
+      </div>
+      <label class="q">자녀 생각</label>
+      <div class="seg" id="children_view"></div>
+      <label class="q" style="margin-top:16px">가치관 밸런스게임</label>
+      <div id="bg"></div>
+
+      <div class="sec">나를 한 줄로</div>
+      <label class="q">한 줄 소개 <span class="req">*</span></label>
+      <input type="text" id="one_liner" maxlength="60" placeholder="예: 잔잔한 주말을 좋아해요">
+      <label class="q">요즘 가장 빠져 있는 것</label><input type="text" id="i1" maxlength="100">
+      <label class="q">나는 이런 사람</label><input type="text" id="i2" maxlength="100">
+      <label class="q">주말 풍경</label><input type="text" id="i3" maxlength="100">
+      <label class="q">연애에서 중요한 것</label><input type="text" id="i4" maxlength="100">
+
+      <div class="sec">사진 (1~3장)</div>
+      <input type="file" id="photos" accept="image/*" multiple>
+      <div class="lockmsg"><b>사진은 둘러보기에서 비공개</b>입니다. 서로 호감으로 매칭된 상대에게만 공개돼요.</div>
+      <div class="photos" id="thumbs"></div>
+
+      <div class="sec">이상형 (매칭에만 사용 · 비공개)</div>
+      <div class="row2">
+        <div><label class="q">원하는 나이대</label><div class="row2"><input type="number" id="want_age_min" placeholder="최소" min="18" max="99"><input type="number" id="want_age_max" placeholder="최대" min="18" max="99"></div></div>
+      </div>
+      <label class="q">원하는 지역</label><input type="text" id="want_region" maxlength="40" placeholder="예: 대전 전체">
+
+      <div class="sec">연락 & 동의</div>
+      <label class="q">연락처(휴대폰) <span class="req">*</span></label>
+      <input type="tel" id="contact" maxlength="20" placeholder="010-0000-0000">
+      <div class="hint">운영자 인증·안내용. 다른 회원에게 절대 공개되지 않습니다.</div>
+      <div class="chk"><input type="checkbox" id="c_priv"><label for="c_priv">[필수] <a href="/privacy.html" target="_blank" style="color:var(--clay-dark)">개인정보 수집·이용</a>에 동의합니다.</label></div>
+      <div class="chk"><input type="checkbox" id="c_photo"><label for="c_photo">[필수] 사진을 <b>매칭된 상대에게만</b> 공개하는 것에 동의합니다.</label></div>
+
+      <button class="primary" id="saveBtn">프로필 제출하기</button>
+      <div class="msg" id="profileMsg"></div>
+    </div>
+  </section>
+
+  <!-- ===== PENDING ===== -->
+  <section id="pendingView" class="hide">
+    <div class="center">
+      <p class="serif">프로필을 제출했어요</p>
+      <p class="sub" style="margin-top:10px">운영자 인증·심사 후 대전 1기 오픈 때 둘러보기가 열립니다.<br>검증된 사람과, 진지하게 — 잇다 드림.</p>
+    </div>
+  </section>
+
+  <section id="loadingView"><div class="center"><p class="sub">불러오는 중...</p></div></section>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+const SUPA_URL='https://zufbzklzofpdcchegjoj.supabase.co';
+const SUPA_KEY='sb_publishable_OzI-j09bRT6VgDxSvHHGeA_XSUaKvP6';
+const sb=supabase.createClient(SUPA_URL,SUPA_KEY);
+const $=id=>document.getElementById(id);
+const show=v=>{['authView','profileView','pendingView','loadingView'].forEach(x=>$(x).classList.add('hide'));$(v).classList.remove('hide');};
+
+// segmented option builders
+function seg(containerId,name,opts){const c=$(containerId);c.innerHTML=opts.map((o,i)=>`<span class="opt"><input type="radio" name="${name}" id="${name}${i}" value="${o}"><label for="${name}${i}">${o}</label></span>`).join('');}
+seg('smoking','smk',['비흡연','가끔','흡연']);
+seg('drinking','drk',['안함','가끔','즐김']);
+seg('pet','pet_',['없음','좋아함','키움']);
+seg('children_view','chld',['원함','미정','없음']);
+const by=$('birth_year');for(let y=2006;y>=1985;y--){by.innerHTML+=`<option value="${y}">${y}년생</option>`;}
+const MB=['ISTJ','ISFJ','INFJ','INTJ','ISTP','ISFP','INFP','INTP','ESTP','ESFP','ENFP','ENTP','ESTJ','ESFJ','ENFJ','ENTJ'];
+$('mbti').innerHTML+='<option value="">선택</option>'+MB.map(m=>`<option>${m}</option>`).join('');
+const BG=[['주말은','집순이·집돌이','밖순이·밖돌이'],['연락은','자주 톡','필요할 때'],['데이트는','계획형','즉흥형'],['애정표현','말로','행동으로'],['갈등 생기면','바로 대화','시간 두고'],['취미는','함께','각자 존중'],['삶의 태도','미래 계획형','현재 충실형'],['에너지','사람 만나며 충전','혼자 충전'],['끌림','비슷한 사람','다른 사람'],['돈은','모으는 재미','경험에 투자'],['결혼관','언젠가 하고 싶다','천천히·열린 생각'],['반려동물','너무 좋다','부담스럽다']];
+$('bg').innerHTML=BG.map((it,i)=>`<div class="bg-row"><div class="t">${it[0]}</div><div class="seg"><span class="opt"><input type="radio" name="bg${i}" id="bg${i}a" value="${it[1]}"><label for="bg${i}a">${it[1]}</label></span><span class="opt"><input type="radio" name="bg${i}" id="bg${i}b" value="${it[2]}"><label for="bg${i}b">${it[2]}</label></span></div></div>`).join('');
+
+// ---------- AUTH ----------
+let mode='login';
+$('authToggle').onclick=()=>{mode=mode==='login'?'signup':'login';$('authTitle').textContent=mode==='login'?'로그인':'가입하기';$('authBtn').textContent=mode==='login'?'로그인':'가입하기';$('authToggle').textContent=mode==='login'?'처음이신가요? 가입하기':'이미 계정이 있으신가요? 로그인';};
+function authMsg(t,ok){const m=$('authMsg');m.textContent=t;m.className='msg '+(ok?'ok':'err');}
+$('authBtn').onclick=async()=>{
+  const email=$('email').value.trim(),password=$('password').value;
+  if(!email||password.length<6){authMsg('이메일과 6자 이상 비밀번호를 입력해주세요.');return;}
+  $('authBtn').disabled=true;
+  try{
+    if(mode==='signup'){
+      const{error}=await sb.auth.signUp({email,password});
+      if(error)throw error;
+      authMsg('가입 완료! 이메일 인증이 필요할 수 있어요. 인증 후 로그인 해주세요.',true);
+    }else{
+      const{error}=await sb.auth.signInWithPassword({email,password});
+      if(error)throw error;
+    }
+  }catch(e){authMsg(e.message||'오류가 발생했어요.');}
+  $('authBtn').disabled=false;
+};
+$('logoutBtn').onclick=async()=>{await sb.auth.signOut();location.reload();};
+
+// ---------- PROFILE ----------
+let selectedFiles=[];
+$('photos').onchange=e=>{
+  selectedFiles=[...e.target.files].slice(0,3);
+  if([...e.target.files].some(f=>f.size>5*1024*1024)){pMsg('각 사진은 5MB 이하만 가능합니다.');}
+  $('thumbs').innerHTML='';
+  selectedFiles.forEach(f=>{const img=document.createElement('img');img.className='thumb';img.src=URL.createObjectURL(f);$('thumbs').appendChild(img);});
+};
+function pMsg(t,ok){const m=$('profileMsg');m.textContent=t;m.className='msg '+(ok?'ok':'err');}
+function radioVal(name){const el=document.querySelector(`input[name=${name}]:checked`);return el?el.value:null;}
+
+$('saveBtn').onclick=async()=>{
+  const{data:{user}}=await sb.auth.getUser();
+  if(!user){authMsg('세션이 만료됐어요. 다시 로그인 해주세요.');show('authView');return;}
+  const nickname=$('nickname').value.trim();
+  const gender=radioVal('gender');
+  const birth_year=parseInt($('birth_year').value);
+  const region=$('region').value;
+  const one_liner=$('one_liner').value.trim();
+  const contact=$('contact').value.trim();
+  if(!nickname||!gender||!birth_year||!region||!one_liner||!contact){pMsg('필수 항목(닉네임·성별·출생연도·지역·한 줄 소개·연락처)을 채워주세요.');return;}
+  if(!$('c_priv').checked||!$('c_photo').checked){pMsg('필수 동의를 체크해주세요.');return;}
+  if(selectedFiles.length<1){pMsg('사진을 1장 이상 올려주세요.');return;}
+
+  $('saveBtn').disabled=true;pMsg('제출 중...',true);
+  try{
+    // 1) 사진 업로드 (비공개 버킷, 본인 폴더)
+    const photoPaths=[];
+    for(let i=0;i<selectedFiles.length;i++){
+      const f=selectedFiles[i];
+      const ext=(f.name.split('.').pop()||'jpg').toLowerCase();
+      const path=`${user.id}/${Date.now()}_${i}.${ext}`;
+      const{error:upErr}=await sb.storage.from('profile-photos').upload(path,f,{upsert:false});
+      if(upErr)throw upErr;
+      photoPaths.push(path);
+    }
+    // 2) values_tags, intro
+    const values_tags={};BG.forEach((it,i)=>{const v=radioVal('bg'+i);if(v)values_tags[it[0]]=v;});
+    const intro={'요즘 빠져있는 것':$('i1').value.trim(),'나는 이런 사람':$('i2').value.trim(),'주말 풍경':$('i3').value.trim(),'연애에서 중요한 것':$('i4').value.trim()};
+    // 3) profiles upsert
+    const{error:pErr}=await sb.from('profiles').upsert({
+      id:user.id,status:'pending',nickname,gender,birth_year,region,
+      height:parseInt($('height').value)||null,
+      job_category:$('job_category').value.trim()||null,
+      smoking:radioVal('smk'),drinking:radioVal('drk'),pet:radioVal('pet_'),
+      mbti:$('mbti').value||null,marriage_view:$('marriage_view').value||null,children_view:radioVal('chld'),
+      one_liner,values_tags,intro
+    });
+    if(pErr)throw pErr;
+    // 4) 연락처(분리 테이블)
+    const{error:cErr}=await sb.from('profiles_private').upsert({user_id:user.id,contact});
+    if(cErr)throw cErr;
+    // 5) 이상형
+    await sb.from('preferences').upsert({user_id:user.id,
+      want_age_min:parseInt($('want_age_min').value)||null,
+      want_age_max:parseInt($('want_age_max').value)||null,
+      want_region:$('want_region').value.trim()||null});
+    // 6) 사진 메타
+    for(let i=0;i<photoPaths.length;i++){await sb.from('profile_photos').insert({user_id:user.id,storage_path:photoPaths[i],sort_order:i});}
+    show('pendingView');
+  }catch(e){pMsg('오류: '+(e.message||'다시 시도해주세요.'));$('saveBtn').disabled=false;}
+};
+
+// ---------- ROUTER ----------
+async function route(){
+  show('loadingView');
+  const{data:{session}}=await sb.auth.getSession();
+  if(!session){show('authView');$('logoutBtn').classList.add('hide');return;}
+  $('logoutBtn').classList.remove('hide');
+  const{data:prof}=await sb.from('profiles').select('id,status').eq('id',session.user.id).maybeSingle();
+  if(!prof){show('profileView');}
+  else{show('pendingView');}  // Phase 1-3에서 승인 시 둘러보기로 분기 예정
+}
+sb.auth.onAuthStateChange(()=>route());
+route();
+</script>
+</body>
+</html>

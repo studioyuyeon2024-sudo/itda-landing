@@ -4,10 +4,14 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>잇다 — 검증된 사람과, 진지하게 | 대전 1기 사전신청</title>
-<meta name="description" content="소개팅앱의 가벼움과 결혼정보회사의 부담 사이. 검증된 사람들 사이에서 직접 고르는 소개팅, 잇다. 대전 1기 무료 모집중.">
+<meta name="description" content="소개팅앱의 가벼움과 결혼정보회사의 부담 사이. 검증된 사람들 사이에서 가치관으로 보고 직접 고르는 소개팅, 잇다. 대전 1기 무료 모집중.">
+<meta property="og:title" content="잇다 — 검증된 사람과, 진지하게">
+<meta property="og:description" content="검증된 사람들 사이에서, 가치관으로 보고 직접 고르는 소개팅. 대전 1기 무료 모집중.">
+<meta property="og:type" content="website">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Nanum+Myeongjo:wght@400;700&family=Noto+Sans+KR:wght@400;500&display=swap" rel="stylesheet">
+<script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
 <style>
   :root{
     --ivory:#F7F3EC; --surface:#FCFAF5; --clay:#C26B4A; --clay-dark:#A5482A;
@@ -17,26 +21,22 @@
   body{font-family:'Noto Sans KR',sans-serif;background:var(--ivory);color:var(--ink);line-height:1.7;-webkit-font-smoothing:antialiased}
   .serif{font-family:'Nanum Myeongjo',serif}
   .wrap{max-width:520px;margin:0 auto;padding:0 22px}
-  /* header */
   header{padding:20px 0;display:flex;align-items:center;gap:10px}
   .logo{font-family:'Nanum Myeongjo',serif;font-size:26px;font-weight:700;color:var(--clay);line-height:1}
   .pill{font-size:12px;background:#F3DFD4;color:var(--clay-dark);padding:4px 11px;border-radius:20px;margin-left:auto}
-  /* hero */
   .hero{padding:34px 0 30px}
   .hero h1{font-family:'Nanum Myeongjo',serif;font-size:34px;font-weight:700;line-height:1.35;margin-bottom:14px}
   .hero p{color:#6F6557;font-size:15px}
   .trust{display:flex;gap:8px;margin-top:22px;flex-wrap:wrap}
   .trust span{font-size:12px;background:var(--mist);color:#7A5238;padding:6px 12px;border-radius:20px}
-  /* steps */
-  .steps{background:var(--surface);border:0.5px solid var(--line);border-radius:16px;padding:22px;margin:6px 0 30px}
-  .steps h2{font-size:14px;font-weight:500;margin-bottom:16px}
+  .card{background:var(--surface);border:0.5px solid var(--line);border-radius:16px;padding:22px;margin:6px 0 22px}
+  .card h2{font-size:14px;font-weight:500;margin-bottom:16px}
   .step{display:flex;gap:12px;margin-bottom:14px}
   .step:last-child{margin-bottom:0}
   .num{flex-shrink:0;width:24px;height:24px;border-radius:50%;background:var(--clay);color:var(--surface);font-size:13px;display:flex;align-items:center;justify-content:center;margin-top:2px}
   .step b{font-weight:500;font-size:14px}
   .step small{display:block;color:var(--muted);font-size:12px}
-  /* form */
-  form{background:var(--surface);border:0.5px solid var(--line);border-radius:16px;padding:24px;margin-bottom:26px}
+  form{background:var(--surface);border:0.5px solid var(--line);border-radius:16px;padding:24px;margin-bottom:22px}
   .fld{margin-bottom:20px}
   label.q{display:block;font-size:14px;font-weight:500;margin-bottom:8px}
   label.q .req{color:var(--clay)}
@@ -44,7 +44,6 @@
     width:100%;font-family:inherit;font-size:14px;color:var(--ink);background:#fff;
     border:0.5px solid var(--line);border-radius:10px;padding:11px 12px;outline:none}
   input:focus,select:focus,textarea:focus{border-color:var(--clay)}
-  textarea{resize:vertical;min-height:46px}
   .seg{display:flex;gap:8px}
   .seg .opt{flex:1}
   .seg input{position:absolute;opacity:0;pointer-events:none}
@@ -59,16 +58,21 @@
   .chk{display:flex;gap:9px;align-items:flex-start;margin-bottom:11px}
   .chk input{margin-top:4px;width:16px;height:16px;accent-color:var(--clay);flex-shrink:0}
   .chk label{font-size:13px;color:#5F574C}
+  .chk a{color:var(--clay-dark)}
+  .hp{position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden}
   button.submit{width:100%;background:var(--clay);border:none;color:var(--surface);font-family:inherit;font-size:16px;font-weight:500;padding:15px 0;border-radius:12px;cursor:pointer;margin-top:6px}
   button.submit:disabled{opacity:.5;cursor:not-allowed}
   .note{font-size:12px;color:var(--muted);text-align:center;margin-top:10px}
   .sec-h{font-size:13px;font-weight:500;color:var(--clay-dark);margin:26px 0 12px;letter-spacing:.5px}
-  /* thanks */
-  #thanks{display:none;background:var(--surface);border:0.5px solid var(--line);border-radius:16px;padding:40px 24px;text-align:center;margin-bottom:26px}
+  .faq dt{font-size:14px;font-weight:500;margin-top:14px}
+  .faq dd{font-size:13px;color:#6F6557;margin-top:4px}
+  #thanks{display:none;background:var(--surface);border:0.5px solid var(--line);border-radius:16px;padding:40px 24px;text-align:center;margin-bottom:22px}
   #thanks h2{font-family:'Nanum Myeongjo',serif;font-size:24px;color:var(--clay);margin-bottom:12px}
   #thanks p{font-size:14px;color:#6F6557}
   footer{text-align:center;padding:24px 0 40px;color:var(--muted);font-size:12px}
+  footer a{color:var(--clay-dark)}
   .err{color:#A33;font-size:13px;margin-top:10px;display:none}
+  .cf-turnstile{margin-top:6px}
 </style>
 </head>
 <body>
@@ -86,7 +90,7 @@
     </div>
   </section>
 
-  <section class="steps">
+  <section class="card">
     <h2>이렇게 진행돼요</h2>
     <div class="step"><div class="num">1</div><div><b>가입하고 인증해요</b><small>본인·직업 인증한 사람만 입장. 유령·알바 계정 없음.</small></div></div>
     <div class="step"><div class="num">2</div><div><b>가치관으로 채워요</b><small>밸런스게임·자기소개로 사람을 보여줘요. 사진은 아직 비공개.</small></div></div>
@@ -96,6 +100,8 @@
 
   <form id="form">
     <div class="sec-h">기본 정보</div>
+
+    <div class="hp"><label>이 칸은 비워두세요<input type="text" id="website" tabindex="-1" autocomplete="off"></label></div>
 
     <div class="fld">
       <label class="q">성별 <span class="req">*</span></label>
@@ -127,7 +133,7 @@
       </div>
       <div class="fld">
         <label class="q" for="job">직업군</label>
-        <input type="text" id="job" placeholder="예: 간호사 / 개발자">
+        <input type="text" id="job" maxlength="60" placeholder="예: 간호사 / 개발자">
       </div>
     </div>
 
@@ -135,30 +141,32 @@
     <div class="bg-grid" id="bg"></div>
 
     <div class="sec-h" style="margin-top:24px">나를 한 줄로</div>
-    <div class="fld"><label class="q">요즘 가장 빠져 있는 것은?</label><input type="text" id="i1" placeholder="자유롭게"></div>
-    <div class="fld"><label class="q">이런 사람과 잘 맞아요</label><input type="text" id="i2" placeholder="자유롭게"></div>
-    <div class="fld"><label class="q">주말의 나를 한 장면으로</label><input type="text" id="i3" placeholder="자유롭게"></div>
-    <div class="fld"><label class="q">연애에서 포기 못 하는 한 가지</label><input type="text" id="i4" placeholder="자유롭게"></div>
+    <div class="fld"><label class="q">요즘 가장 빠져 있는 것은?</label><input type="text" id="i1" maxlength="100" placeholder="자유롭게"></div>
+    <div class="fld"><label class="q">이런 사람과 잘 맞아요</label><input type="text" id="i2" maxlength="100" placeholder="자유롭게"></div>
+    <div class="fld"><label class="q">주말의 나를 한 장면으로</label><input type="text" id="i3" maxlength="100" placeholder="자유롭게"></div>
+    <div class="fld"><label class="q">연애에서 포기 못 하는 한 가지</label><input type="text" id="i4" maxlength="100" placeholder="자유롭게"></div>
 
     <div class="sec-h">연락 & 동의</div>
     <div class="fld">
       <label class="q" for="contact">연락처 (휴대폰) <span class="req">*</span></label>
-      <input type="tel" id="contact" placeholder="010-0000-0000" required>
+      <input type="tel" id="contact" maxlength="20" placeholder="010-0000-0000" required>
       <div class="hint">1기 오픈·인증 안내용으로만 사용합니다.</div>
     </div>
     <div class="fld">
       <label class="q" for="referrer">어디서 보고 오셨나요?</label>
-      <input type="text" id="referrer" placeholder="예: 인스타 / 커뮤니티 / 지인">
+      <input type="text" id="referrer" maxlength="80" placeholder="예: 인스타 / 커뮤니티 / 지인">
     </div>
 
     <div class="chk">
       <input type="checkbox" id="c_priv" required>
-      <label for="c_priv">[필수] 개인정보 수집·이용에 동의합니다. (수집 항목: 성별·출생연도·지역·연락처·입력 정보 / 목적: 매칭 서비스 제공·안내 / 보유: 회원 탈퇴 시까지)</label>
+      <label for="c_priv">[필수] <a href="/privacy.html" target="_blank">개인정보 수집·이용</a>에 동의합니다. (수집: 성별·출생연도·지역·연락처·입력 정보 / 목적: 매칭 서비스 제공·안내 / 보유: 회원 탈퇴 시까지)</label>
     </div>
     <div class="chk">
       <input type="checkbox" id="c_photo">
       <label for="c_photo">[선택] 추후 프로필 사진을 등록하고, <b>매칭된 상대에게만</b> 공개하는 것에 동의합니다.</label>
     </div>
+
+    <div class="cf-turnstile" data-sitekey="0x4AAAAAADmi5l8p9x2dy6qf" data-theme="light"></div>
 
     <button type="submit" class="submit" id="submitBtn">대전 1기 무료 신청하기</button>
     <div class="err" id="err"></div>
@@ -170,22 +178,34 @@
     <p>대전 1기 정원이 모이면 가장 먼저 오픈 소식을 보내드릴게요.<br>검증된 사람과, 진지하게 — 잇다 드림.</p>
   </div>
 
-  <footer>잇다 (itda) · 검증된 사람과, 진지하게<br>본 페이지는 대전 1기 사전신청 접수용입니다.</footer>
+  <section class="card faq">
+    <h2>자주 묻는 질문</h2>
+    <dl>
+      <dt>정말 무료인가요?</dt>
+      <dd>네, 1기 사전신청과 가입·둘러보기·호감 표시는 무료입니다.</dd>
+      <dt>제 사진은 언제 공개되나요?</dt>
+      <dd>둘러보기 단계에선 누구에게도 공개되지 않습니다. 서로 호감을 표시해 매칭된 상대에게만 공개돼요.</dd>
+      <dt>안전한가요?</dt>
+      <dd>본인·직업 인증을 거친 사람만 입장하고, 비회원은 프로필을 볼 수 없습니다. 봇·비정상 접근도 차단합니다.</dd>
+      <dt>대전이 아닌데 신청해도 되나요?</dt>
+      <dd>현재는 대전 1기를 모으는 중이에요. 인근 지역도 신청 가능하며, 다른 지역은 순차 오픈합니다.</dd>
+    </dl>
+  </section>
+
+  <footer>
+    잇다 (itda) · 검증된 사람과, 진지하게<br>
+    <a href="/privacy.html" target="_blank">개인정보처리방침</a> · 본 페이지는 대전 1기 사전신청 접수용입니다.
+  </footer>
 </div>
 
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
-  const SUPA_URL = 'https://zufbzklzofpdcchegjoj.supabase.co';
-  const SUPA_KEY = 'sb_publishable_OzI-j09bRT6VgDxSvHHGeA_XSUaKvP6';
-  const sb = supabase.createClient(SUPA_URL, SUPA_KEY);
+  const FN_URL = 'https://zufbzklzofpdcchegjoj.supabase.co/functions/v1/waitlist-submit';
 
-  // birth year options (1988~2006 → 20~38세 중심, 범위 넉넉히)
   const bySel = document.getElementById('birth_year');
   for (let y = 2006; y >= 1985; y--) {
     const o = document.createElement('option'); o.value = y; o.textContent = y + '년생'; bySel.appendChild(o);
   }
 
-  // balance game
   const BG = [
     ['주말은','집순이·집돌이','밖순이·밖돌이'],
     ['연락은','자주 톡','필요할 때'],
@@ -215,18 +235,26 @@
   const errEl = document.getElementById('err');
   const btn = document.getElementById('submitBtn');
 
+  function showErr(msg){ errEl.textContent = msg; errEl.style.display='block'; }
+
   form.addEventListener('submit', async (e) => {
     e.preventDefault();
     errEl.style.display = 'none';
+
+    if (document.getElementById('website').value) { return; } // honeypot
+
     const gender = (document.querySelector('input[name=gender]:checked')||{}).value;
     const birth_year = parseInt(bySel.value);
     const region = document.getElementById('region').value;
     const contact = document.getElementById('contact').value.trim();
     const priv = document.getElementById('c_priv').checked;
     if (!gender || !birth_year || !region || !contact || !priv) {
-      errEl.textContent = '필수 항목(성별·출생연도·지역·연락처·개인정보 동의)을 확인해주세요.';
-      errEl.style.display = 'block'; return;
+      showErr('필수 항목(성별·출생연도·지역·연락처·개인정보 동의)을 확인해주세요.'); return;
     }
+
+    const token = (window.turnstile && turnstile.getResponse) ? turnstile.getResponse() : '';
+    if (!token) { showErr('잠시만요 — 보안 확인(캡차)을 완료해주세요.'); return; }
+
     const values_tags = {};
     BG.forEach((item, i) => {
       const v = (document.querySelector(`input[name=bg${i}]:checked`)||{}).value;
@@ -238,26 +266,33 @@
       '주말의 나': document.getElementById('i3').value.trim(),
       '포기 못하는 것': document.getElementById('i4').value.trim()
     };
-    const height = parseInt(document.getElementById('height').value) || null;
     const payload = {
-      gender, birth_year, region, height,
+      turnstileToken: token,
+      gender, birth_year, region,
+      height: parseInt(document.getElementById('height').value) || null,
       job: document.getElementById('job').value.trim() || null,
       values_tags, intro, contact,
       photo_consent: document.getElementById('c_photo').checked,
       privacy_consent: priv,
       referrer: document.getElementById('referrer').value.trim() || null
     };
+
     btn.disabled = true; btn.textContent = '접수 중...';
-    const { error } = await sb.from('waitlist').insert(payload);
-    if (error) {
-      errEl.textContent = '일시적 오류가 발생했어요. 잠시 후 다시 시도해주세요.';
-      errEl.style.display = 'block';
+    try {
+      const res = await fetch(FN_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      });
+      if (!res.ok) throw new Error('submit failed');
+      form.style.display = 'none';
+      document.getElementById('thanks').style.display = 'block';
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    } catch (err) {
+      showErr('일시적 오류가 발생했어요. 잠시 후 다시 시도해주세요.');
       btn.disabled = false; btn.textContent = '대전 1기 무료 신청하기';
-      return;
+      if (window.turnstile) turnstile.reset();
     }
-    form.style.display = 'none';
-    document.getElementById('thanks').style.display = 'block';
-    window.scrollTo({ top: 0, behavior: 'smooth' });
   });
 </script>
 </body>

@@ -54,20 +54,15 @@
 <div class="wrap">
   <header><span class="logo">잇다</span><button class="logout hide" id="logoutBtn">로그아웃</button></header>
 
-  <!-- ===== AUTH ===== -->
+  <!-- ===== AUTH (Kakao only) ===== -->
   <section id="authView" class="hide">
-    <h1 id="authTitle">로그인</h1>
-    <p class="sub">검증된 사람과, 진지하게.</p>
+    <h1>잇다 시작하기</h1>
+    <p class="sub">검증된 사람과, 진지하게. 카카오로 3초 만에 시작하세요.</p>
     <div class="card">
-      <label class="q" for="email">이메일</label>
-      <input type="email" id="email" placeholder="you@example.com" autocomplete="email">
-      <label class="q" for="password">비밀번호</label>
-      <input type="password" id="password" placeholder="6자 이상" autocomplete="current-password">
-      <button class="primary" id="authBtn">로그인</button>
+      <button class="primary" id="kakaoBtn" style="background:#FEE500;color:#3C1E1E">카카오로 시작하기</button>
       <div class="msg" id="authMsg"></div>
-      <p style="text-align:center;margin-top:14px"><button class="link" id="authToggle">처음이신가요? 가입하기</button></p>
     </div>
-    <p class="hint" style="text-align:center">가입 시 <a href="/privacy.html" target="_blank" style="color:var(--clay-dark)">개인정보처리방침</a>에 동의하게 됩니다.</p>
+    <p class="hint" style="text-align:center">시작 시 <a href="/privacy.html" target="_blank" style="color:var(--clay-dark)">개인정보처리방침</a>에 동의하게 됩니다.</p>
   </section>
 
   <!-- ===== PROFILE FORM ===== -->
@@ -173,25 +168,11 @@ $('mbti').innerHTML+='<option value="">선택</option>'+MB.map(m=>`<option>${m}<
 const BG=[['주말은','집순이·집돌이','밖순이·밖돌이'],['연락은','자주 톡','필요할 때'],['데이트는','계획형','즉흥형'],['애정표현','말로','행동으로'],['갈등 생기면','바로 대화','시간 두고'],['취미는','함께','각자 존중'],['삶의 태도','미래 계획형','현재 충실형'],['에너지','사람 만나며 충전','혼자 충전'],['끌림','비슷한 사람','다른 사람'],['돈은','모으는 재미','경험에 투자'],['결혼관','언젠가 하고 싶다','천천히·열린 생각'],['반려동물','너무 좋다','부담스럽다']];
 $('bg').innerHTML=BG.map((it,i)=>`<div class="bg-row"><div class="t">${it[0]}</div><div class="seg"><span class="opt"><input type="radio" name="bg${i}" id="bg${i}a" value="${it[1]}"><label for="bg${i}a">${it[1]}</label></span><span class="opt"><input type="radio" name="bg${i}" id="bg${i}b" value="${it[2]}"><label for="bg${i}b">${it[2]}</label></span></div></div>`).join('');
 
-// ---------- AUTH ----------
-let mode='login';
-$('authToggle').onclick=()=>{mode=mode==='login'?'signup':'login';$('authTitle').textContent=mode==='login'?'로그인':'가입하기';$('authBtn').textContent=mode==='login'?'로그인':'가입하기';$('authToggle').textContent=mode==='login'?'처음이신가요? 가입하기':'이미 계정이 있으신가요? 로그인';};
+// ---------- AUTH (Kakao only) ----------
 function authMsg(t,ok){const m=$('authMsg');m.textContent=t;m.className='msg '+(ok?'ok':'err');}
-$('authBtn').onclick=async()=>{
-  const email=$('email').value.trim(),password=$('password').value;
-  if(!email||password.length<6){authMsg('이메일과 6자 이상 비밀번호를 입력해주세요.');return;}
-  $('authBtn').disabled=true;
-  try{
-    if(mode==='signup'){
-      const{error}=await sb.auth.signUp({email,password});
-      if(error)throw error;
-      authMsg('가입 완료! 이메일 인증이 필요할 수 있어요. 인증 후 로그인 해주세요.',true);
-    }else{
-      const{error}=await sb.auth.signInWithPassword({email,password});
-      if(error)throw error;
-    }
-  }catch(e){authMsg(e.message||'오류가 발생했어요.');}
-  $('authBtn').disabled=false;
+$('kakaoBtn').onclick=async()=>{
+  const{error}=await sb.auth.signInWithOAuth({provider:'kakao',options:{redirectTo:location.origin+'/app.html'}});
+  if(error)authMsg('카카오 로그인 오류: '+error.message);
 };
 $('logoutBtn').onclick=async()=>{await sb.auth.signOut();location.reload();};
 
